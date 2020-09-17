@@ -18,6 +18,8 @@ Como exemplo, será gerado dados sobre a Copa do Mundo FIFA.
 
 ![](https://github.com/lucianoortizsilva/java-download-pdf/blob/master/src/main/resources/static/github/download-pdf.jpg)
 
+<hr>
+
 > **GET** http://localhost:8080/copas/download/base64
 
 ![](https://github.com/lucianoortizsilva/java-download-pdf/blob/master/src/main/resources/static/github/download-base64.jpg)
