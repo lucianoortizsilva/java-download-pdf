@@ -11,6 +11,7 @@ Um endpoint faz download do arquivo físico, o outro faz download do arquivo em 
 Como exemplo, será gerado dados sobre a Copa do Mundo FIFA.
 
 ### Como rodar ?
+- Execute o comando **`mvn clean package`**
 - Execute o comando **`mvn spring-boot:run`** (Para iniciar e gerar um model via JPA)
 - Execute o comando **`mvn liquibase:update`** (Para popular dados do model)
 
