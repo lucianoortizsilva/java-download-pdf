@@ -13,7 +13,7 @@
 	<artifactId>java-download-pdf</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>java-download-pdf</name>
-	<description>API Download PDF, no formato '.pdf' ou String Base64</description>
+	<description>Endpoint Download PDF, no formato '.xlsx' ou String Base64</description>
 
 	<properties>
 		<java.version>1.8</java.version>
