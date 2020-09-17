@@ -14,7 +14,6 @@ import lombok.Setter;
 public class Column {
 
 	private Integer indice;
-	private Integer sizeHorizontal;
 	private String value = StringUtils.EMPTY;
 	private Format format = Format.TEXT;
 
