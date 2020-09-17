@@ -7,8 +7,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
@@ -39,6 +43,19 @@ public class CopaDoMundoService {
 		return file;
 	}
 
+	
+	
+	public String createReportStringInBase64() throws IOException, DocumentException {
+		final File file = this.createReportInFile();
+		String base64 = null;
+		if(!Objects.isNull(file)) {
+			final byte[] fileInBytes = FileUtils.readFileToByteArray(file);
+			final byte[] bytesBase64 = Base64.encodeBase64(fileInBytes);
+			base64 = StringUtils.newStringUtf8(bytesBase64);
+		}
+		return base64;
+	}
+	
 	
 	
 	private File generateFile(final List<Line> lines) throws DocumentException, IOException {

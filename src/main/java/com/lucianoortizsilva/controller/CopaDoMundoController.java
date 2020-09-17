@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -44,5 +45,20 @@ public class CopaDoMundoController {
 		return ResponseUtil.ok(resource, filename);
 	}
 	
+	
+	
+	@RequestMapping(value = "/download/base64", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> base64() {
+		String base64 = null;
+		try {
+			base64 = this.copaDoMundoService.createReportStringInBase64();
+			if (StringUtils.isEmpty(base64)) {
+				return ResponseEntity.notFound().build();
+			}
+		} catch (final Exception e) {
+			ResponseUtil.cathException(e);
+		}
+		return ResponseEntity.ok(base64);
+	}
 	
 }
