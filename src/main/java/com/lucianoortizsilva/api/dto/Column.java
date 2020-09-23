@@ -1,4 +1,4 @@
-package com.lucianoortizsilva.pdf;
+package com.lucianoortizsilva.api.dto;
 
 import org.apache.commons.lang3.StringUtils;
 

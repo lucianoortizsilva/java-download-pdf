@@ -1,29 +1,19 @@
 package com.lucianoortizsilva.service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lucianoortizsilva.api.PdfApi;
+import com.lucianoortizsilva.api.dto.Column;
+import com.lucianoortizsilva.api.dto.Format;
+import com.lucianoortizsilva.api.dto.Line;
 import com.lucianoortizsilva.model.CopaDoMundo;
-import com.lucianoortizsilva.pdf.Column;
-import com.lucianoortizsilva.pdf.Format;
-import com.lucianoortizsilva.pdf.Line;
-import com.lucianoortizsilva.pdf.PDF;
 import com.lucianoortizsilva.repository.CopaDoMundoRepository;
 
 import lombok.AllArgsConstructor;
@@ -34,54 +24,27 @@ public class CopaDoMundoService {
 
 	private CopaDoMundoRepository copaDoMundoRepository;
 
+	public static final String[] HEADERS = { "Ano", "Campeão", "Vice", "Estádio", "Local", "Público" };
+	private static final String AUTHOR = "lucianoortizsilva@gmail.com";
+
 	public File createReportInFile() throws IOException, DocumentException {
 		File file = null;
 		final List<Line> lines = this.generateLines();
 		if (CollectionUtils.isNotEmpty(lines)) {
-			file = this.generateFile(lines);
+			file = PdfApi.create(lines, HEADERS, AUTHOR);
 		}
 		return file;
 	}
 
-	
-	
 	public String createReportStringInBase64() throws IOException, DocumentException {
-		final File file = this.createReportInFile();
 		String base64 = null;
-		if(!Objects.isNull(file)) {
-			final byte[] fileInBytes = FileUtils.readFileToByteArray(file);
-			final byte[] bytesBase64 = Base64.encodeBase64(fileInBytes);
-			base64 = StringUtils.newStringUtf8(bytesBase64);
+		final List<Line> lines = this.generateLines();
+		if (CollectionUtils.isNotEmpty(lines)) {
+			base64 = PdfApi.createBase64(lines, HEADERS, AUTHOR);
 		}
 		return base64;
 	}
-	
-	
-	
-	private File generateFile(final List<Line> lines) throws DocumentException, IOException {
-		final Document document = PDF.createDocument();
 
-		final String filename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-		final File file = File.createTempFile(filename, ".pdf");
-		final FileOutputStream fos = new FileOutputStream(file);
-
-		final PdfWriter pdfWriter = PdfWriter.getInstance(document, fos);
-		
-		document.open();
-		final PdfPTable table = new PdfPTable(PDF.HEADERS.length);
-		PDF.createHeader(table);
-		PDF.createData(table, lines);
-		document.add(table);
-		
-		document.close();
-		fos.close();
-		pdfWriter.close();
-
-		return file;
-	}
-
-	
-	
 	private List<Line> generateLines() {
 		final List<CopaDoMundo> copas = this.copaDoMundoRepository.findAll();
 		final List<Line> lines = new ArrayList<>();
@@ -90,9 +53,9 @@ public class CopaDoMundoService {
 				final Column column0 = new Column(0, copaDoMundo.getAno().toString(), Format.TEXT);
 				final Column column1 = new Column(1, copaDoMundo.getCampeao(), Format.TEXT);
 				final Column column2 = new Column(2, copaDoMundo.getVice(), Format.TEXT);
-				final Column column3 = new Column(4, copaDoMundo.getEstadio(), Format.TEXT);
-				final Column column4 = new Column(5, copaDoMundo.getLocal(), Format.TEXT);
-				final Column column5 = new Column(6, copaDoMundo.getPublico().toString(), Format.TEXT);
+				final Column column3 = new Column(3, copaDoMundo.getEstadio(), Format.TEXT);
+				final Column column4 = new Column(4, copaDoMundo.getLocal(), Format.TEXT);
+				final Column column5 = new Column(5, copaDoMundo.getPublico().toString(), Format.TEXT);
 				final Line line = new Line(column0, column1, column2, column3, column4, column5);
 				lines.add(line);
 			}

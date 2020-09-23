@@ -1,4 +1,4 @@
-package com.lucianoortizsilva.pdf;
+package com.lucianoortizsilva.api.dto;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Phrase;
@@ -9,12 +9,12 @@ public enum Format {
 
 	TEXT {
 		@Override
-		void formatCell(final PdfPTable table, final Column column) {
+		public void formatCell(final PdfPTable table, final Column column) {
 			final PdfPCell cell = new PdfPCell(new Phrase(column.getValue()));
 			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(cell);
 		}
 	};
 
-	abstract void formatCell(final PdfPTable table, final Column column);
+	public abstract void formatCell(final PdfPTable table, final Column column);
 }

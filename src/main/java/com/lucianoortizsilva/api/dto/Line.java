@@ -1,4 +1,4 @@
-package com.lucianoortizsilva.pdf;
+package com.lucianoortizsilva.api.dto;
 
 import java.util.ArrayList;
 import java.util.List;
